@@ -2,6 +2,8 @@
 
 var parent = document.getElementById('imgs');
 var allImgs = [];
+var rounds = 25;
+var count = 0;
 
 // constructor function
 function ImgCreator(url, title) {
@@ -28,6 +30,14 @@ ImgCreator.prototype.appendImage = function () {
 function getRandomImg() {
   parent.textContent = '';
 
+  // keep track of rounds
+  if (count === rounds) {
+    parent.removeEventListener('click', getRandomImg);
+    return;
+  }
+  count++;
+
+
   var idx1 = randomNum();
   var idx2 = randomNum();
   var idx3 = randomNum();
@@ -36,6 +46,7 @@ function getRandomImg() {
     idx2 = randomNum();
     idx3 = randomNum();
   }
+
 
   // display first image
   allImgs[idx1].appendImage();
