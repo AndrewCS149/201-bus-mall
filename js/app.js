@@ -1,15 +1,26 @@
 'use strict';
 
-var parent = document.getElementById('imgs');
+//TODO: calc percentages of votes to views for each img
+
+// 2d array of imgs and img file paths
+var imgsAndPaths = [
+  ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'],
+
+  ['jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg','jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'png', 'jpg', 'jpg', 'gif', 'jpg', 'jpg']
+];
+
+var imgParent = document.getElementById('imgs');
 var listParent = document.getElementById('vote-results');
 var allImgs = [];
 var rounds = 25;
 var count = 0;
 
 // constructor function
-function ImgCreator(url, title) {
-  this.url = url;
+function ImgCreator(title, extension) {
+  // this.url = url;
+  this.filePath = `/imgs/${title}.${extension}`;
   this.title = title;
+  this.alt = title;
   this.votes = 0;
   this.views = 0;
   this.hasVotes = false;
@@ -20,14 +31,14 @@ function randomNum() {
   return Math.ceil(Math.random() * allImgs.length - 1);
 }
 
-// create an image element holding the title and url. Append to parent.
+// create an image element holding the title and url. Append to imgParent.
 ImgCreator.prototype.appendImage = function () {
   var imageEl = document.createElement('img');
 
-  imageEl.src = this.url;
+  imageEl.src = this.filePath;
   imageEl.title = this.title;
 
-  parent.appendChild(imageEl);
+  imgParent.appendChild(imageEl);
 };
 
 // create a list item for every instance and display the view and vote counts
@@ -43,11 +54,11 @@ ImgCreator.prototype.appendList = function () {
 };
 
 function getRandomImg() {
-  parent.textContent = '';
+  imgParent.textContent = '';
 
   // keep track of rounds
   if (count === rounds) { //TODO: doesnt add up
-    parent.removeEventListener('click', getRandomImg);
+    imgParent.removeEventListener('click', getRandomImg);
     ImgCreator.prototype.appendList();
     return;
   }
@@ -58,6 +69,7 @@ function getRandomImg() {
   var idx2 = randomNum();
   var idx3 = randomNum();
 
+  // ensure that all idx values are unique
   while ((idx1 === idx2) || (idx1 === idx3) || (idx2 === idx3)) {
     idx2 = randomNum();
     idx3 = randomNum();
@@ -77,8 +89,9 @@ function getRandomImg() {
 }
 
 // event listener to record how many times each image was clicked
-parent.addEventListener('click', function () {
+imgParent.addEventListener('click', function () {
   var title = event.target.title;
+  console.log(title);
 
   // loop through all images
   for (var i = 0; i < allImgs.length; i++) {
@@ -92,25 +105,8 @@ parent.addEventListener('click', function () {
 });
 
 // create all ImgCreator instances
-new ImgCreator('../imgs/bag.jpg', 'bag');
-new ImgCreator('../imgs/banana.jpg', 'banana');
-new ImgCreator('../imgs/bathroom.jpg', 'bathroom');
-new ImgCreator('../imgs/boots.jpg', 'boots');
-new ImgCreator('../imgs/breakfast.jpg', 'breakfast');
-new ImgCreator('../imgs/bubblegum.jpg', 'bubblegum');
-new ImgCreator('../imgs/chair.jpg', 'chair');
-new ImgCreator('../imgs/cthulhu.jpg', 'cthulhu');
-new ImgCreator('../imgs/dog-duck.jpg', 'dog-duck');
-new ImgCreator('../imgs/dragon.jpg', 'dragon');
-new ImgCreator('../imgs/pen.jpg', 'pen');
-new ImgCreator('../imgs/pet-sweep.jpg', 'pet-sweep');
-new ImgCreator('../imgs/scissors.jpg', 'scissors');
-new ImgCreator('../imgs/shark.jpg', 'shark');
-new ImgCreator('../imgs/sweep.png', 'sweep');
-new ImgCreator('../imgs/tauntaun.jpg', 'tauntaun');
-new ImgCreator('../imgs/unicorn.jpg', 'unicorn');
-new ImgCreator('../imgs/usb.gif', 'usb');
-new ImgCreator('../imgs/water-can.jpg', 'water-can');
-new ImgCreator('../imgs/wine-glass.jpg', 'wine-glass');
+for(var i = 0; i < 20; i++) {
+  new ImgCreator(imgsAndPaths[0][i], imgsAndPaths[1][i]);
+}
 
 getRandomImg();
