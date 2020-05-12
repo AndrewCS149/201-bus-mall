@@ -40,8 +40,6 @@ ImgCreator.prototype.appendList = function () {
   }
 };
 
-
-
 function getRandomImg() {
   parent.textContent = '';
 
@@ -89,8 +87,6 @@ parent.addEventListener('click', function () {
     }
   }
 });
-
-
 
 // create all ImgCreator instances
 new ImgCreator('../imgs/bag.jpg', 'bag');
