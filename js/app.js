@@ -28,8 +28,8 @@ ImgCreator.prototype.appendImage = function () {
   parent.appendChild(imageEl);
 };
 
+// create a list item for every instance and display the view and vote counts
 ImgCreator.prototype.appendList = function () {
-
   for (var i = 0; i < allImgs.length; i++) {
     var listItem = document.createElement('li');
 
