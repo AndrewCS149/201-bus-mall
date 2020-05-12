@@ -12,6 +12,7 @@ function ImgCreator(url, title) {
   this.title = title;
   this.votes = 0;
   this.views = 0;
+  this.considered = false;
   allImgs.push(this);
 }
 
@@ -32,11 +33,12 @@ ImgCreator.prototype.appendImage = function () {
 // create a list item for every instance and display the view and vote counts
 ImgCreator.prototype.appendList = function () {
   for (var i = 0; i < allImgs.length; i++) {
-    var listItem = document.createElement('li');
+    if (allImgs[i].considered === true) {
+      var listItem = document.createElement('li');
+      listItem.textContent = `${allImgs[i].title} had ${allImgs[i].votes} votes and was shown ${allImgs[i].views} times.`;
 
-    listItem.textContent = `${allImgs[i].title} had ${allImgs[i].votes} votes and was shown ${allImgs[i].views} times.`;
-
-    listParent.appendChild(listItem);
+      listParent.appendChild(listItem);
+    }
   }
 };
 
@@ -84,6 +86,7 @@ parent.addEventListener('click', function () {
     // if title is equal to the clicked image title, increment vote by one
     if (title === allImgs[i].title) {
       allImgs[i].votes++;
+      allImgs[i].considered = true;
     }
   }
 });
