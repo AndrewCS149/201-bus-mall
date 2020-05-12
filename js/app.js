@@ -12,7 +12,7 @@ function ImgCreator(url, title) {
   this.title = title;
   this.votes = 0;
   this.views = 0;
-  this.considered = false;
+  this.hasVotes = false;
   allImgs.push(this);
 }
 
@@ -33,7 +33,7 @@ ImgCreator.prototype.appendImage = function () {
 // create a list item for every instance and display the view and vote counts
 ImgCreator.prototype.appendList = function () {
   for (var i = 0; i < allImgs.length; i++) {
-    if (allImgs[i].considered === true) {
+    if (allImgs[i].hasVotes === true) {
       var listItem = document.createElement('li');
       listItem.textContent = `${allImgs[i].title} had ${allImgs[i].votes} votes and was shown ${allImgs[i].views} times.`;
 
@@ -46,7 +46,7 @@ function getRandomImg() {
   parent.textContent = '';
 
   // keep track of rounds
-  if (count === rounds) {
+  if (count === rounds) { //TODO: doesnt add up
     parent.removeEventListener('click', getRandomImg);
     ImgCreator.prototype.appendList();
     return;
@@ -86,7 +86,7 @@ parent.addEventListener('click', function () {
     // if title is equal to the clicked image title, increment vote by one
     if (title === allImgs[i].title) {
       allImgs[i].votes++;
-      allImgs[i].considered = true;
+      allImgs[i].hasVotes = true;
     }
   }
 });
