@@ -19,6 +19,7 @@ function randomNum() {
   return Math.ceil(Math.random() * allImgs.length - 1);
 }
 
+// create an image element holding the title and url. Append to parent.
 ImgCreator.prototype.appendImage = function () {
   var imageEl = document.createElement('img');
 
@@ -52,7 +53,7 @@ function getRandomImg() {
   }
   count++;
 
-
+  // get random idx values
   var idx1 = randomNum();
   var idx2 = randomNum();
   var idx3 = randomNum();
