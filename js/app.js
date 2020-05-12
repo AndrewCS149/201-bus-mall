@@ -1,6 +1,7 @@
 'use strict';
 
 var parent = document.getElementById('imgs');
+var listParent = document.getElementById('vote-results');
 var allImgs = [];
 var rounds = 25;
 var count = 0;
@@ -27,12 +28,26 @@ ImgCreator.prototype.appendImage = function () {
   parent.appendChild(imageEl);
 };
 
+ImgCreator.prototype.appendList = function () {
+
+  for (var i = 0; i < allImgs.length; i++) {
+    var listItem = document.createElement('li');
+
+    listItem.textContent = `${allImgs[i].title} had ${allImgs[i].votes} votes and was shown ${allImgs[i].views} times.`;
+
+    listParent.appendChild(listItem);
+  }
+};
+
+
+
 function getRandomImg() {
   parent.textContent = '';
 
   // keep track of rounds
   if (count === rounds) {
     parent.removeEventListener('click', getRandomImg);
+    ImgCreator.prototype.appendList();
     return;
   }
   count++;
@@ -46,7 +61,6 @@ function getRandomImg() {
     idx2 = randomNum();
     idx3 = randomNum();
   }
-
 
   // display first image
   allImgs[idx1].appendImage();
