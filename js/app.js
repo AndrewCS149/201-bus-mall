@@ -3,7 +3,7 @@
 //TODO: calc percentages of votes to views for each img
 
 var imgTitles = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
-var imgExtensions = ['jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg','jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'png', 'jpg', 'jpg', 'gif', 'jpg', 'jpg'];
+var imgExtensions = ['jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'png', 'jpg', 'jpg', 'gif', 'jpg', 'jpg'];
 
 var imgParent = document.getElementById('imgs');
 var listParent = document.getElementById('vote-results');
@@ -11,6 +11,8 @@ var allImgs = [];
 var rounds = 25;
 var count = 0;
 var votesArr = [];
+var rgbValues = [];
+var rgbBorders = [];
 
 // constructor function
 function ImgCreator(title, extension) {
@@ -24,10 +26,10 @@ function ImgCreator(title, extension) {
   allImgs.push(this);
 }
 
-function randomNum() {
-  return Math.ceil(Math.random() * allImgs.length - 1);
+// function to generate a random number
+function randomNum(max) {
+  return Math.ceil(Math.random() * max - 1);
 }
-
 // create an image element holding the title and url. Append to imgParent.
 ImgCreator.prototype.appendImage = function () {
   var imageEl = document.createElement('img');
@@ -63,14 +65,14 @@ function getRandomImg() {
   count++;
 
   // get random idx values
-  var idx1 = randomNum();
-  var idx2 = randomNum();
-  var idx3 = randomNum();
+  var idx1 = randomNum(allImgs.length);
+  var idx2 = randomNum(allImgs.length);
+  var idx3 = randomNum(allImgs.length);
 
   // ensure that all idx values are unique
   while ((idx1 === idx2) || (idx1 === idx3) || (idx2 === idx3)) {
-    idx2 = randomNum();
-    idx3 = randomNum();
+    idx2 = randomNum(allImgs.length);
+    idx3 = randomNum(allImgs.length);
   }
 
   // display first image
@@ -86,9 +88,22 @@ function getRandomImg() {
   allImgs[idx3].views++;
 }
 
+// push all votes into the global votesArr[]
 function votesArray() {
-  for(var i = 0; i < allImgs.length; i++){
+  for (var i = 0; i < allImgs.length; i++) {
     votesArr.push(allImgs[i].votes);
+  }
+}
+
+// function to generate a random rgb value and push to rgbValues[]
+function generateRGB() {
+  for (var i = 0; i < allImgs.length; i++) {
+    var red = randomNum(255);
+    var green = randomNum(255);
+    var blue = randomNum(255);
+
+    rgbValues.push(`rgba(${red}, ${green}, ${blue}, 0.2)`);
+    rgbBorders.push(`rgb(${red}, ${green}, ${blue})`);
   }
 }
 
@@ -109,7 +124,7 @@ imgParent.addEventListener('click', function () {
 });
 
 // create all ImgCreator instances
-for(var i = 0; i < 20; i++) {
+for (var i = 0; i < 20; i++) {
   new ImgCreator(imgTitles[i], imgExtensions[i]);
 }
 
@@ -117,6 +132,8 @@ for(var i = 0; i < 20; i++) {
 // generate chart
 function generateChart() {
   votesArray();
+  generateRGB();
+
   var ctx = document.getElementById('myChart').getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'horizontalBar',
@@ -125,22 +142,8 @@ function generateChart() {
       datasets: [{
         label: '# of Votes',
         data: votesArr,
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)'
-        ],
+        backgroundColor: rgbValues,
+        borderColor: rgbBorders,
         borderWidth: 1
       }]
     },
