@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+header {
+  background-color: grey;
+  height: 7em;
+}
+
+main {
+  margin: auto;
+  height: 500px;
+  width: 960px;
+}
+
+#imgs {
+  display: flex;
+  justify-content: space-between;
+  margin: 30px 0px;
+}
+
+#imgs img {
+  height: 200px;
+  width: 300px;
+  border: 2px solid black;
+}
+
+#imgs img:hover {
+  opacity: 60%;
+}
+
+#vote-results {
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.25em;
+  list-style-type: square;
+}
+
+footer {
+  background-color: grey;
+  height: 4em;
+}
