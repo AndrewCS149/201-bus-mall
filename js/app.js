@@ -11,6 +11,47 @@ function ImageCreator(url, name) {
   allImgs.push(this);
 }
 
+function randomNum() {
+  return Math.ceil(Math.random() * allImgs.length - 1);
+}
+
+function getRandomImg() {
+  parent.textContent = '';
+
+  var idx1 = randomNum();
+  var idx2 = randomNum();
+  var idx3 = randomNum();
+
+  while ((idx1 === idx2) || (idx1 === idx3) || (idx2 === 3)) {
+    idx2 = randomNum();
+    idx3 = randomNum();
+  }
+
+  // display first image
+  allImgs[idx1].appendImage();
+  allImgs[idx1].views++;
+
+  // display second image
+  allImgs[idx2].appendImage();
+  allImgs[idx2].views++;
+
+  // display third image
+  allImgs[idx2].appendImage();
+  allImgs[idx2].views++;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 new ImageCreator('../imgs/bag.jpg', 'bag');
 new ImageCreator('../imgs/banana.jpg', 'banana');
 new ImageCreator('../imgs/bathroom.jpg', 'bathroom');
