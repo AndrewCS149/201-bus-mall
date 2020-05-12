@@ -3,7 +3,8 @@
 var parent = document.getElementById('imgs');
 var allImgs = [];
 
-function ImageCreator(url, name) {
+// constructor function
+function ImgCreator(url, name) {
   this.url = url;
   this.name = name;
   this.votes = 0;
@@ -14,6 +15,15 @@ function ImageCreator(url, name) {
 function randomNum() {
   return Math.ceil(Math.random() * allImgs.length - 1);
 }
+
+ImgCreator.prototype.appendImage = function () {
+  var imageEl = document.createElement('img');
+
+  imageEl.src = this.url;
+  imageEl.title = this.name;
+
+  parent.appendChild(imageEl);
+};
 
 function getRandomImg() {
   parent.textContent = '';
@@ -41,34 +51,26 @@ function getRandomImg() {
 }
 
 
+// create all ImgCreator instances
+new ImgCreator('../imgs/bag.jpg', 'bag');
+new ImgCreator('../imgs/banana.jpg', 'banana');
+new ImgCreator('../imgs/bathroom.jpg', 'bathroom');
+new ImgCreator('../imgs/boots.jpg', 'boots');
+new ImgCreator('../imgs/breakfast.jpg', 'breakfast');
+new ImgCreator('../imgs/bubblegum.jpg', 'bubblegum');
+new ImgCreator('../imgs/chair.jpg', 'chair');
+new ImgCreator('../imgs/cthulhu.jpg', 'cthulhu');
+new ImgCreator('../imgs/dog-duck.jpg', 'dog-duck');
+new ImgCreator('../imgs/dragon.jpg', 'dragon');
+new ImgCreator('../imgs/pen.jpg', 'pen');
+new ImgCreator('../imgs/pet-sweep.jpg', 'pet-sweep');
+new ImgCreator('../imgs/scissors.jpg', 'scissors');
+new ImgCreator('../imgs/shark.jpg', 'shark');
+new ImgCreator('../imgs/sweep.png', 'sweep');
+new ImgCreator('../imgs/tauntaun.jpg', 'tauntaun');
+new ImgCreator('../imgs/unicorn.jpg', 'unicorn');
+new ImgCreator('../imgs/usb.gif', 'usb');
+new ImgCreator('../imgs/water-can.jpg', 'water-can');
+new ImgCreator('../imgs/wine-glass.jpg', 'wine-glass');
 
-
-
-
-
-
-
-
-
-
-
-new ImageCreator('../imgs/bag.jpg', 'bag');
-new ImageCreator('../imgs/banana.jpg', 'banana');
-new ImageCreator('../imgs/bathroom.jpg', 'bathroom');
-new ImageCreator('../imgs/boots.jpg', 'boots');
-new ImageCreator('../imgs/breakfast.jpg', 'breakfast');
-new ImageCreator('../imgs/bubblegum.jpg', 'bubblegum');
-new ImageCreator('../imgs/chair.jpg', 'chair');
-new ImageCreator('../imgs/cthulhu.jpg', 'cthulhu');
-new ImageCreator('../imgs/dog-duck.jpg', 'dog-duck');
-new ImageCreator('../imgs/dragon.jpg', 'dragon');
-new ImageCreator('../imgs/pen.jpg', 'pen');
-new ImageCreator('../imgs/pet-sweep.jpg', 'pet-sweep');
-new ImageCreator('../imgs/scissors.jpg', 'scissors');
-new ImageCreator('../imgs/shark.jpg', 'shark');
-new ImageCreator('../imgs/sweep.png', 'sweep');
-new ImageCreator('../imgs/tauntaun.jpg', 'tauntaun');
-new ImageCreator('../imgs/unicorn.jpg', 'unicorn');
-new ImageCreator('../imgs/usb.gif', 'usb');
-new ImageCreator('../imgs/water-can.jpg', 'water-can');
-new ImageCreator('../imgs/wine-glass.jpg', 'wine-glass');
+getRandomImg();
