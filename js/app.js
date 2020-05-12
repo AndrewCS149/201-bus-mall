@@ -4,9 +4,9 @@ var parent = document.getElementById('imgs');
 var allImgs = [];
 
 // constructor function
-function ImgCreator(url, name) {
+function ImgCreator(url, title) {
   this.url = url;
-  this.name = name;
+  this.title = title;
   this.votes = 0;
   this.views = 0;
   allImgs.push(this);
@@ -20,7 +20,7 @@ ImgCreator.prototype.appendImage = function () {
   var imageEl = document.createElement('img');
 
   imageEl.src = this.url;
-  imageEl.title = this.name;
+  imageEl.title = this.title;
 
   parent.appendChild(imageEl);
 };
@@ -32,7 +32,7 @@ function getRandomImg() {
   var idx2 = randomNum();
   var idx3 = randomNum();
 
-  while ((idx1 === idx2) || (idx1 === idx3) || (idx2 === 3)) {
+  while ((idx1 === idx2) || (idx1 === idx3) || (idx2 === idx3)) {
     idx2 = randomNum();
     idx3 = randomNum();
   }
@@ -46,9 +46,24 @@ function getRandomImg() {
   allImgs[idx2].views++;
 
   // display third image
-  allImgs[idx2].appendImage();
-  allImgs[idx2].views++;
+  allImgs[idx3].appendImage();
+  allImgs[idx3].views++;
 }
+
+// event listener to record how many times each image was clicked
+parent.addEventListener('click', function () {
+  var title = event.target.title;
+
+  // loop through all images
+  for (var i = 0; i < allImgs.length; i++) {
+
+    // if title is equal to the clicked image title, increment vote by one
+    if (title === allImgs[i].title) {
+      allImgs[i].votes++;
+    }
+  }
+});
+
 
 
 // create all ImgCreator instances
