@@ -15,10 +15,10 @@ var viewsArr = [];
 var rgbValues = [];
 var rgbBorders = [];
 var uniqueIdxArr = [];
+var totalVotes = 0;
 
 // constructor function
 function ImgCreator(title, extension) {
-  // this.url = url;
   this.filePath = `/imgs/${title}.${extension}`;
   this.title = title;
   this.alt = title;
@@ -69,6 +69,13 @@ ImgCreator.prototype.appendList = function () {
       listItem.textContent = `${allImgs[i].title} had ${allImgs[i].votes} votes and was shown ${allImgs[i].views} times.`;
 
       listParent.appendChild(listItem);
+
+      // // locally store total votes
+      // var votesLocal = localStorage.getItem('votes');
+      // totalVotes = JSON.parse(votesLocal);
+      // totalVotes += allImgs[i].votes;
+      // var stringifiedTotals = JSON.stringify(totalVotes);
+      // localStorage.setItem('votes', stringifiedTotals);
     }
   }
 };
@@ -116,10 +123,23 @@ function generateRGB() {
   }
 }
 
+// locally store total votes
+function storeLocal() {
+  var votesLocal = localStorage.getItem('votes');
+  totalVotes = JSON.parse(votesLocal);
+  totalVotes += 1;
+  var stringifiedTotals = JSON.stringify(totalVotes);
+  localStorage.setItem('votes', stringifiedTotals);
+}
+
 // handler function for click event on #images
+imgParent.addEventListener('click', handleClick);
 function handleClick(event) {
   var title = event.target.title;
   console.log(title);
+
+  // locally store all votes
+  storeLocal();
 
   // loop through all images
   for (var i = 0; i < allImgs.length; i++) {
@@ -130,7 +150,7 @@ function handleClick(event) {
       allImgs[i].hasVotes = true;
 
       // // keep track of rounds
-      if (count === 5) {
+      if (count === rounds) {
         // imgParent.textContent = '';
         imgParent.removeEventListener('click', handleClick);
         ImgCreator.prototype.appendList();
@@ -142,12 +162,32 @@ function handleClick(event) {
   displayImage();
 }
 
-imgParent.addEventListener('click', handleClick);
-
 // create all ImgCreator instances
 for (var i = 0; i < 20; i++) {
   new ImgCreator(imgTitles[i], imgExtensions[i]);
 }
+
+// Local Storage
+// function storeLocal() {
+
+// }
+
+
+//TODO: make these not generate chart without finishing the voting process
+function darkMode() {
+  Chart.defaults.global.defaultFontColor = 'white';
+  generateChart();
+  document.body.style.backgroundColor = '#424242';
+}
+
+function lightMode() {
+  Chart.defaults.global.defaultFontColor = 'black';
+  generateChart();
+  document.body.style.backgroundColor = 'white';
+}
+
+displayImage();
+
 // generate chart
 function generateChart() {
   votesAndViewsArr();
@@ -183,18 +223,3 @@ function generateChart() {
     }
   });
 }
-
-//TODO: make these not generate chart without finishing the voting process
-function darkMode() {
-  Chart.defaults.global.defaultFontColor = 'white';
-  generateChart();
-  document.body.style.backgroundColor = '#424242';
-}
-
-function lightMode() {
-  Chart.defaults.global.defaultFontColor = 'black';
-  generateChart();
-  document.body.style.backgroundColor = 'white';
-}
-
-displayImage();
