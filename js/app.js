@@ -97,7 +97,7 @@ function getRandomIdx() {
 }
 
 // push all votes into the global votesArr[]
-function votesArray() {
+function votesAndViewsArr() {
   for (var i = 0; i < allImgs.length; i++) {
     votesArr.push(allImgs[i].votes);
     viewsArr.push(allImgs[i].views);
@@ -130,7 +130,7 @@ function handleClick(event) {
       allImgs[i].hasVotes = true;
 
       // // keep track of rounds
-      if (count === 5) {
+      if (count === rounds) {
         // imgParent.textContent = '';
         imgParent.removeEventListener('click', handleClick);
         ImgCreator.prototype.appendList();
@@ -151,7 +151,7 @@ for (var i = 0; i < 20; i++) {
 
 // generate chart
 function generateChart() {
-  votesArray();
+  votesAndViewsArr();
   generateRGB();
 
   var ctx = document.getElementById('myChart').getContext('2d');
@@ -160,8 +160,14 @@ function generateChart() {
     data: {
       labels: imgTitles,
       datasets: [{
-        label: '# of Votes',
+        label: 'votes',
         data: votesArr,
+        backgroundColor: rgbValues,
+        borderColor: rgbBorders,
+        borderWidth: 1
+      }, {
+        label: 'views',
+        data: viewsArr,
         backgroundColor: rgbValues,
         borderColor: rgbBorders,
         borderWidth: 1
@@ -179,6 +185,4 @@ function generateChart() {
   });
 }
 
-// getRandomIdx();
 displayImage();
-// ImgCreator.prototype.render();
