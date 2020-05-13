@@ -130,7 +130,7 @@ function handleClick(event) {
       allImgs[i].hasVotes = true;
 
       // // keep track of rounds
-      if (count === rounds) {
+      if (count === 1) {
         // imgParent.textContent = '';
         imgParent.removeEventListener('click', handleClick);
         ImgCreator.prototype.appendList();
@@ -148,12 +148,12 @@ imgParent.addEventListener('click', handleClick);
 for (var i = 0; i < 20; i++) {
   new ImgCreator(imgTitles[i], imgExtensions[i]);
 }
-
 // generate chart
 function generateChart() {
   votesAndViewsArr();
   generateRGB();
 
+  // Chart.defaults.global.defaultFontColor = 'red';
   var ctx = document.getElementById('myChart').getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'horizontalBar',
@@ -177,7 +177,7 @@ function generateChart() {
       scales: {
         yAxes: [{
           ticks: {
-            beginAtZero: true
+            beginAtZero: true,
           }
         }]
       }

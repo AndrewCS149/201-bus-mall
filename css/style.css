@@ -33,7 +33,7 @@ main {
   list-style-type: square;
 }
 
-canvas {
+#myChart {
   margin-bottom: 100px;
 }
 
