@@ -33,7 +33,14 @@ main {
   list-style-type: square;
 }
 
-/* footer {
+canvas {
+  margin-bottom: 100px;
+}
+
+footer {
   background-color: grey;
-  height: 4em;
-} */
+  bottom: 0px;
+  height: 50px;
+  position: fixed;
+  width: 100%;
+}
