@@ -130,7 +130,7 @@ function handleClick(event) {
       allImgs[i].hasVotes = true;
 
       // // keep track of rounds
-      if (count === 1) {
+      if (count === 5) {
         // imgParent.textContent = '';
         imgParent.removeEventListener('click', handleClick);
         ImgCreator.prototype.appendList();
@@ -153,7 +153,6 @@ function generateChart() {
   votesAndViewsArr();
   generateRGB();
 
-  // Chart.defaults.global.defaultFontColor = 'red';
   var ctx = document.getElementById('myChart').getContext('2d');
   var myChart = new Chart(ctx, {
     type: 'horizontalBar',
@@ -183,6 +182,19 @@ function generateChart() {
       }
     }
   });
+}
+
+//TODO: make these not generate chart without finishing the voting process
+function darkMode() {
+  Chart.defaults.global.defaultFontColor = 'white';
+  generateChart();
+  document.body.style.backgroundColor = '#424242';
+}
+
+function lightMode() {
+  Chart.defaults.global.defaultFontColor = 'black';
+  generateChart();
+  document.body.style.backgroundColor = 'white';
 }
 
 displayImage();
