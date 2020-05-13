@@ -130,7 +130,7 @@ function handleClick(event) {
       allImgs[i].hasVotes = true;
 
       // // keep track of rounds
-      if (count === rounds) { //TODO: doesnt add up
+      if (count === 5) {
         // imgParent.textContent = '';
         imgParent.removeEventListener('click', handleClick);
         ImgCreator.prototype.appendList();
