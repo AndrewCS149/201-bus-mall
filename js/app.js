@@ -116,9 +116,8 @@ function generateRGB() {
   }
 }
 
-
-// event listener to record how many times each image was clicked
-imgParent.addEventListener('click', function () {
+// handler function for click event on #images
+function handleClick(event) {
   var title = event.target.title;
   console.log(title);
 
@@ -132,17 +131,18 @@ imgParent.addEventListener('click', function () {
 
       // // keep track of rounds
       if (count === rounds) { //TODO: doesnt add up
-        imgParent.textContent = '';
-        imgParent.removeEventListener('click', this);
+        // imgParent.textContent = '';
+        imgParent.removeEventListener('click', handleClick);
         ImgCreator.prototype.appendList();
         generateChart();
-        return;
       }
       count++;
     }
   }
   displayImage();
-});
+}
+
+imgParent.addEventListener('click', handleClick);
 
 // create all ImgCreator instances
 for (var i = 0; i < 20; i++) {
