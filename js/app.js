@@ -9,10 +9,12 @@ var imgParent = document.getElementById('imgs');
 var listParent = document.getElementById('vote-results');
 var allImgs = [];
 var rounds = 25;
-var count = 0;
+var count = 1;
 var votesArr = [];
+var viewsArr = [];
 var rgbValues = [];
 var rgbBorders = [];
+var uniqueIdxArr = [];
 
 // constructor function
 function ImgCreator(title, extension) {
@@ -26,10 +28,21 @@ function ImgCreator(title, extension) {
   allImgs.push(this);
 }
 
-// function to generate a random number
-function randomNum(max) {
-  return Math.ceil(Math.random() * max - 1);
-}
+ImgCreator.prototype.render = function () {
+  // get random idx values
+  var idx1 = getRandomIdx();
+  var idx2 = getRandomIdx();
+  var idx3 = getRandomIdx();
+
+  // display images
+  allImgs[idx1].appendImage();
+  allImgs[idx1].views++;
+  allImgs[idx2].appendImage();
+  allImgs[idx2].views++;
+  allImgs[idx3].appendImage();
+  allImgs[idx3].views++;
+};
+
 // create an image element holding the title and url. Append to imgParent.
 ImgCreator.prototype.appendImage = function () {
   var imageEl = document.createElement('img');
@@ -39,6 +52,14 @@ ImgCreator.prototype.appendImage = function () {
 
   imgParent.appendChild(imageEl);
 };
+
+// A function to display three random images at a time to the page
+function displayImage() {
+  imgParent.textContent = '';
+
+  var idx = getRandomIdx();
+  allImgs[idx].render();
+}
 
 // create a list item for every instance and display the view and vote counts
 ImgCreator.prototype.appendList = function () {
@@ -52,46 +73,34 @@ ImgCreator.prototype.appendList = function () {
   }
 };
 
-function getRandomImg() {
-  imgParent.textContent = '';
+// function to generate a random number
+function randomNum(max) {
+  return Math.ceil(Math.random() * max - 1);
+}
 
-  // keep track of rounds
-  if (count === rounds) { //TODO: doesnt add up
-    imgParent.removeEventListener('click', getRandomImg);
-    ImgCreator.prototype.appendList();
-    generateChart();
-    return;
-  }
-  count++;
+// function to get a random idx that is not in the uniqueIdxArr[]
+function getRandomIdx() {
 
-  // get random idx values
-  var idx1 = randomNum(allImgs.length);
-  var idx2 = randomNum(allImgs.length);
-  var idx3 = randomNum(allImgs.length);
+  var idx = randomNum(allImgs.length);
 
-  // ensure that all idx values are unique
-  while ((idx1 === idx2) || (idx1 === idx3) || (idx2 === idx3)) {
-    idx2 = randomNum(allImgs.length);
-    idx3 = randomNum(allImgs.length);
+  while (uniqueIdxArr.includes(idx)) {
+    idx = randomNum(allImgs.length);
   }
 
-  // display first image
-  allImgs[idx1].appendImage();
-  allImgs[idx1].views++;
+  uniqueIdxArr.push(idx);
 
-  // display second image
-  allImgs[idx2].appendImage();
-  allImgs[idx2].views++;
+  if (uniqueIdxArr.length > 6) {
+    uniqueIdxArr.shift();
+  }
 
-  // display third image
-  allImgs[idx3].appendImage();
-  allImgs[idx3].views++;
+  return idx;
 }
 
 // push all votes into the global votesArr[]
 function votesArray() {
   for (var i = 0; i < allImgs.length; i++) {
     votesArr.push(allImgs[i].votes);
+    viewsArr.push(allImgs[i].views);
   }
 }
 
@@ -107,6 +116,7 @@ function generateRGB() {
   }
 }
 
+
 // event listener to record how many times each image was clicked
 imgParent.addEventListener('click', function () {
   var title = event.target.title;
@@ -119,15 +129,25 @@ imgParent.addEventListener('click', function () {
     if (title === allImgs[i].title) {
       allImgs[i].votes++;
       allImgs[i].hasVotes = true;
+
+      // // keep track of rounds
+      if (count === rounds) { //TODO: doesnt add up
+        imgParent.textContent = '';
+        imgParent.removeEventListener('click', this);
+        ImgCreator.prototype.appendList();
+        generateChart();
+        return;
+      }
+      count++;
     }
   }
+  displayImage();
 });
 
 // create all ImgCreator instances
 for (var i = 0; i < 20; i++) {
   new ImgCreator(imgTitles[i], imgExtensions[i]);
 }
-
 
 // generate chart
 function generateChart() {
@@ -159,4 +179,6 @@ function generateChart() {
   });
 }
 
-getRandomImg();
+// getRandomIdx();
+displayImage();
+// ImgCreator.prototype.render();
