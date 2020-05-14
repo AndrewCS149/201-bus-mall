@@ -15,10 +15,11 @@ var viewsArr = [];
 var rgbValues = [];
 var rgbBorders = [];
 var uniqueIdxArr = [];
+var arr = []; // locally stored images
+
 
 // constructor function
 function ImgCreator(title, extension) {
-  // this.url = url;
   this.filePath = `/imgs/${title}.${extension}`;
   this.title = title;
   this.alt = title;
@@ -41,6 +42,18 @@ ImgCreator.prototype.render = function () {
   allImgs[idx2].views++;
   allImgs[idx3].appendImage();
   allImgs[idx3].views++;
+
+  // local storage views
+  var arrLocal = localStorage.getItem('imgs');
+  arr = JSON.parse(arrLocal);
+
+  // add local storage views
+  arr[idx1].views += 1;
+  arr[idx2].views += 1;
+  arr[idx3].views += 1;
+
+  var strArrLocal = JSON.stringify(arr);
+  localStorage.setItem('imgs', strArrLocal);
 };
 
 // create an image element holding the title and url. Append to imgParent.
@@ -117,6 +130,7 @@ function generateRGB() {
 }
 
 // handler function for click event on #images
+imgParent.addEventListener('click', handleClick);
 function handleClick(event) {
   var title = event.target.title;
   console.log(title);
@@ -129,8 +143,15 @@ function handleClick(event) {
       allImgs[i].votes++;
       allImgs[i].hasVotes = true;
 
+      // add up local storage votes
+      var arrLocal = localStorage.getItem('imgs');
+      arr = JSON.parse(arrLocal);
+      arr[i].votes++;
+      var strArrLocal = JSON.stringify(arr);
+      localStorage.setItem('imgs', strArrLocal);
+
       // // keep track of rounds
-      if (count === 1) {
+      if (count === rounds) {
         // imgParent.textContent = '';
         imgParent.removeEventListener('click', handleClick);
         ImgCreator.prototype.appendList();
@@ -142,20 +163,44 @@ function handleClick(event) {
   displayImage();
 }
 
-imgParent.addEventListener('click', handleClick);
-
-// create all ImgCreator instances
-for (var i = 0; i < 20; i++) {
-  new ImgCreator(imgTitles[i], imgExtensions[i]);
+// create all ImgCreator instances and store in local storage
+function storeLocal() {
+  if (localStorage.getItem('imgs') === null){
+    for (var i = 0; i < 20; i++) {
+      new ImgCreator(imgTitles[i], imgExtensions[i]);
+      arr.push({Title: allImgs[i].title, votes: 0, views: 0});
+    }
+    var strArrLocal = JSON.stringify(arr);
+    localStorage.setItem('imgs', strArrLocal);
+  } else {
+    for (i = 0; i < 20; i++) {
+      new ImgCreator(imgTitles[i], imgExtensions[i]);
+    }
+  }
 }
+var myChart;
+//TODO: make these not generate chart without finishing the voting process
+function darkMode() {
+  Chart.defaults.global.defaultFontColor = 'white';
+  myChart.update();
+  document.body.style.backgroundColor = '#424242';
+  document.body.style.color = 'white';
+}
+
+function lightMode() {
+  Chart.defaults.global.defaultFontColor = 'black';
+  myChart.update();
+  document.body.style.backgroundColor = 'white';
+  document.body.style.color = 'black';
+}
+
 // generate chart
 function generateChart() {
   votesAndViewsArr();
   generateRGB();
 
-  // Chart.defaults.global.defaultFontColor = 'red';
   var ctx = document.getElementById('myChart').getContext('2d');
-  var myChart = new Chart(ctx, {
+  myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {
       labels: imgTitles,
@@ -185,4 +230,5 @@ function generateChart() {
   });
 }
 
+storeLocal();
 displayImage();
