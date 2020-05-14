@@ -15,7 +15,6 @@ var viewsArr = [];
 var rgbValues = [];
 var rgbBorders = [];
 var uniqueIdxArr = [];
-var totalVotes = 0;
 var arr = []; // locally stored images
 
 
@@ -144,11 +143,10 @@ function handleClick(event) {
       allImgs[i].votes++;
       allImgs[i].hasVotes = true;
 
+      // add up local storage votes
       var arrLocal = localStorage.getItem('imgs');
       arr = JSON.parse(arrLocal);
-
       arr[i].votes++;
-
       var strArrLocal = JSON.stringify(arr);
       localStorage.setItem('imgs', strArrLocal);
 
@@ -180,23 +178,21 @@ function storeLocal() {
     }
   }
 }
-
+var myChart;
 //TODO: make these not generate chart without finishing the voting process
 function darkMode() {
   Chart.defaults.global.defaultFontColor = 'white';
-  generateChart();
+  myChart.update();
   document.body.style.backgroundColor = '#424242';
   document.body.style.color = 'white';
 }
 
 function lightMode() {
   Chart.defaults.global.defaultFontColor = 'black';
-  generateChart();
+  myChart.update();
   document.body.style.backgroundColor = 'white';
   document.body.style.color = 'black';
 }
-
-
 
 // generate chart
 function generateChart() {
@@ -204,7 +200,7 @@ function generateChart() {
   generateRGB();
 
   var ctx = document.getElementById('myChart').getContext('2d');
-  var myChart = new Chart(ctx, {
+  myChart = new Chart(ctx, {
     type: 'horizontalBar',
     data: {
       labels: imgTitles,
