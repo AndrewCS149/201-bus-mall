@@ -166,16 +166,18 @@ function handleClick(event) {
 }
 
 // create all ImgCreator instances and store in local storage
-if (localStorage.getItem('imgs') === null){
-  for (var i = 0; i < 20; i++) {
-    new ImgCreator(imgTitles[i], imgExtensions[i]);
-    arr.push({Title: allImgs[i].title, votes: 0, views: 0});
-  }
-  var strArrLocal = JSON.stringify(arr);
-  localStorage.setItem('imgs', strArrLocal);
-} else {
-  for (i = 0; i < 20; i++) {
-    new ImgCreator(imgTitles[i], imgExtensions[i]);
+function storeLocal() {
+  if (localStorage.getItem('imgs') === null){
+    for (var i = 0; i < 20; i++) {
+      new ImgCreator(imgTitles[i], imgExtensions[i]);
+      arr.push({Title: allImgs[i].title, votes: 0, views: 0});
+    }
+    var strArrLocal = JSON.stringify(arr);
+    localStorage.setItem('imgs', strArrLocal);
+  } else {
+    for (i = 0; i < 20; i++) {
+      new ImgCreator(imgTitles[i], imgExtensions[i]);
+    }
   }
 }
 
@@ -194,7 +196,7 @@ function lightMode() {
   document.body.style.color = 'black';
 }
 
-displayImage();
+
 
 // generate chart
 function generateChart() {
@@ -232,3 +234,5 @@ function generateChart() {
   });
 }
 
+storeLocal();
+displayImage();
