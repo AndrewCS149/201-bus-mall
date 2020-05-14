@@ -1,7 +1,5 @@
 'use strict';
 
-//TODO: calc percentages of votes to views for each img
-
 var imgTitles = ['bag', 'banana', 'bathroom', 'boots', 'breakfast', 'bubblegum', 'chair', 'cthulhu', 'dog-duck', 'dragon', 'pen', 'pet-sweep', 'scissors', 'shark', 'sweep', 'tauntaun', 'unicorn', 'usb', 'water-can', 'wine-glass'];
 var imgExtensions = ['jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'jpg', 'png', 'jpg', 'jpg', 'gif', 'jpg', 'jpg'];
 
@@ -16,7 +14,6 @@ var rgbValues = [];
 var rgbBorders = [];
 var uniqueIdxArr = [];
 var arr = []; // locally stored images
-
 
 // constructor function
 function ImgCreator(title, extension) {
@@ -181,17 +178,19 @@ function storeLocal() {
 var myChart;
 //TODO: make these not generate chart without finishing the voting process
 function darkMode() {
-  Chart.defaults.global.defaultFontColor = 'white';
-  myChart.update();
   document.body.style.backgroundColor = '#424242';
   document.body.style.color = 'white';
+
+  Chart.defaults.global.defaultFontColor = 'white';
+  myChart.update();
 }
 
 function lightMode() {
-  Chart.defaults.global.defaultFontColor = 'black';
-  myChart.update();
   document.body.style.backgroundColor = 'white';
   document.body.style.color = 'black';
+
+  Chart.defaults.global.defaultFontColor = 'black';
+  myChart.update();
 }
 
 // generate chart
