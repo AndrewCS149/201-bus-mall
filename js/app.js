@@ -26,13 +26,14 @@ function ImgCreator(title, extension) {
   allImgs.push(this);
 }
 
+// prototype to render the image instances to the page
 ImgCreator.prototype.render = function () {
   // get random idx values
   var idx1 = getRandomIdx();
   var idx2 = getRandomIdx();
   var idx3 = getRandomIdx();
 
-  // display images
+  // display images and increment view count
   allImgs[idx1].appendImage();
   allImgs[idx1].views++;
   allImgs[idx2].appendImage();
@@ -49,6 +50,7 @@ ImgCreator.prototype.render = function () {
   arr[idx2].views += 1;
   arr[idx3].views += 1;
 
+  // put into local storage
   var strArrLocal = JSON.stringify(arr);
   localStorage.setItem('imgs', strArrLocal);
 };
@@ -73,6 +75,8 @@ function displayImage() {
 
 // create a list item for every instance and display the view and vote counts
 ImgCreator.prototype.appendList = function () {
+
+  // display list of images with appropriate view count and vote count
   for (var i = 0; i < allImgs.length; i++) {
     if (allImgs[i].hasVotes === true) {
       var listItem = document.createElement('li');
@@ -162,6 +166,8 @@ function handleClick(event) {
 
 // create all ImgCreator instances and store in local storage
 function storeLocal() {
+
+  // create local storage array if there is none already there
   if (localStorage.getItem('imgs') === null){
     for (var i = 0; i < 20; i++) {
       new ImgCreator(imgTitles[i], imgExtensions[i]);
@@ -169,14 +175,18 @@ function storeLocal() {
     }
     var strArrLocal = JSON.stringify(arr);
     localStorage.setItem('imgs', strArrLocal);
+
+    // if there is already a stored array, then only create the object instances
   } else {
     for (i = 0; i < 20; i++) {
       new ImgCreator(imgTitles[i], imgExtensions[i]);
     }
   }
 }
+
 var myChart;
-//TODO: make these not generate chart without finishing the voting process
+
+// dark mode function
 function darkMode() {
   document.body.style.backgroundColor = '#424242';
   document.body.style.color = 'white';
@@ -185,6 +195,7 @@ function darkMode() {
   myChart.update();
 }
 
+// light mode function
 function lightMode() {
   document.body.style.backgroundColor = 'white';
   document.body.style.color = 'black';
@@ -229,5 +240,6 @@ function generateChart() {
   });
 }
 
+// run functions
 storeLocal();
 displayImage();
