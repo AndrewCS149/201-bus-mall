@@ -17,7 +17,7 @@ var arr = []; // locally stored images
 
 // constructor function
 function ImgCreator(title, extension) {
-  this.filePath = `/imgs/${title}.${extension}`;
+  this.filePath = `../imgs/${title}.${extension}`;
   this.title = title;
   this.alt = title;
   this.votes = 0;
