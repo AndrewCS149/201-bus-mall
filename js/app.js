@@ -17,7 +17,7 @@ var arr = []; // locally stored images
 
 // constructor function
 function ImgCreator(title, extension) {
-  this.filePath = `imgs/${title}.${extension}`;
+  this.filePath = `${title}.${extension}`;
   this.title = title;
   this.alt = title;
   this.votes = 0;
@@ -59,8 +59,7 @@ ImgCreator.prototype.render = function () {
 ImgCreator.prototype.appendImage = function () {
   var imageEl = document.createElement('img');
 
-  // imageEl.src = this.filePath;
-  imageEl.src = 'imgs/bag.jpg';
+  imageEl.src = `imgs/${this.filePath}`;
   imageEl.title = this.title;
 
   imgParent.appendChild(imageEl);
