@@ -59,7 +59,8 @@ ImgCreator.prototype.render = function () {
 ImgCreator.prototype.appendImage = function () {
   var imageEl = document.createElement('img');
 
-  imageEl.src = this.filePath;
+  // imageEl.src = this.filePath;
+  imageEl.src = 'imgs/bag.jpg';
   imageEl.title = this.title;
 
   imgParent.appendChild(imageEl);
